@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Clarity - KB Workspace</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0F172A", // Slate 900
+                        "accent": "#2563EB", // Royal Blue
+                        "background-light": "#F8FAFC", // Slate 50
+                        "background-dark": "#101522",
+                        "surface": "#FFFFFF",
+                        "border": "#E2E8F0", // Slate 200
+                        "text-main": "#334155", // Slate 700
+                        "text-muted": "#94A3B8", // Slate 400
+                        "success": "#059669", // Emerald 600
+                        "warning": "#D97706", // Amber 600
+                    },
+                    fontFamily: {
+                        "sans": ["IBM Plex Sans", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px",
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "6px",
+                    },
+                    boxShadow: {
+                        "none": "none",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for technical look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1; 
+            border: 2px solid #F1F5F9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8; 
+        }
+        
+        /* Utility for sharp borders */
+        .technical-border {
+            border: 1px solid #E2E8F0;
+        }
+        
+        /* Grid background pattern for the PDF viewer background */
+        .bg-grid-slate {
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(to right, #E2E8F0 1px, transparent 1px),
+                linear-gradient(to bottom, #E2E8F0 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main font-sans min-h-screen flex flex-col overflow-hidden">
+<!-- Header Section -->
+<header class="flex flex-col border-b border-border bg-surface shrink-0 z-20">
+<!-- Top Nav Bar (Adapted) -->
+<div class="flex items-center justify-between px-6 py-3 h-14">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-8 bg-primary text-white rounded-sm">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<h1 class="text-primary text-lg font-bold tracking-tight">Enterprise Clarity</h1>
+<div class="h-4 w-px bg-border mx-2"></div>
+<nav class="flex items-center gap-6">
+<a class="text-text-main text-sm font-medium hover:text-accent transition-colors" href="#">Dashboard</a>
+<a class="text-text-main text-sm font-medium hover:text-accent transition-colors" href="#">KB Management</a>
+<a class="text-accent text-sm font-medium" href="#">Workspace</a>
+<a class="text-text-main text-sm font-medium hover:text-accent transition-colors" href="#">Approvals</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-success"></span>
+<span class="text-xs font-mono text-text-main">SYSTEM ONLINE</span>
+</div>
+<div class="size-8 rounded-full bg-slate-200 bg-center bg-cover border border-border" data-alt="User avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbUCizJzE-GsXG9HSRA2mLNDDt_p8kjWW0epmqxvssXYTSgpujWfg20yEwDsIyYxxlydmet6Bk0DVB2cg-l7_5hl1GBiWqvpB_Mc1MFxj-Z4iYZjhv47GeJHFBnwmne4DWAmiMh0D1I_GyZNiApDpKdidZttVOjVfFjtGuIvHuQGnLi5Pj-0AHe6s9rBQV4X8nmQjECwLsWQUbs2rhLCspVSezabESqETlTPMcpY4kQe74fOO7baIM3n8xN5JgLGX_0oXAOjqEmz7s');"></div>
+</div>
+</div>
+<!-- Workspace Controls -->
+<div class="flex items-center justify-between px-6 py-2 bg-slate-50 border-t border-border h-12">
+<div class="flex items-center gap-2 text-sm">
+<a class="text-text-muted hover:text-primary" href="#">Knowledge Bases</a>
+<span class="text-text-muted">/</span>
+<span class="font-semibold text-primary">KB-922: Payments Architecture</span>
+<span class="px-2 py-0.5 ml-2 text-xs font-mono bg-slate-200 text-slate-700 rounded-sm border border-slate-300">DRAFT</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-border rounded-sm">
+<span class="text-xs text-text-muted font-medium uppercase tracking-wide">Version:</span>
+<select class="text-xs font-mono text-primary bg-transparent border-none p-0 focus:ring-0 cursor-pointer">
+<option>v1.2 (Current)</option>
+<option>v1.1 (Approved)</option>
+<option>v1.0 (Archived)</option>
+</select>
+</div>
+<div class="h-4 w-px bg-border"></div>
+<button class="flex items-center gap-2 px-4 py-1.5 bg-accent hover:bg-blue-700 text-white text-xs font-medium uppercase tracking-wide rounded-sm transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Submit for Approval
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Workspace (Three Pane Layout) -->
+<main class="flex flex-1 overflow-hidden h-full">
+<!-- LEFT PANE: Source Documents (30%) -->
+<aside class="w-[30%] min-w-[300px] flex flex-col border-r border-border bg-surface">
+<div class="flex items-center justify-between px-4 py-3 border-b border-border bg-slate-50/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-muted text-lg">folder_open</span>
+<h2 class="text-sm font-semibold text-primary">Sources</h2>
+<span class="bg-slate-200 text-slate-600 text-[10px] font-mono px-1.5 py-0.5 rounded-sm">3</span>
+</div>
+<button class="text-text-muted hover:text-accent">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-0">
+<!-- File List -->
+<div class="flex flex-col divide-y divide-border">
+<!-- Item 1 -->
+<div class="group flex items-start gap-3 p-3 hover:bg-slate-50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-accent">
+<div class="mt-0.5 text-red-500">
+<span class="material-symbols-outlined text-xl">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-primary truncate">arch_diagram_v2.pdf</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-[10px] font-mono text-success bg-green-50 px-1 rounded border border-green-100">INDEXED</span>
+<span class="text-[10px] text-text-muted">2.4 MB • Added 2h ago</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-text-muted hover:text-primary p-1">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+<!-- Item 2 (Active) -->
+<div class="group flex items-start gap-3 p-3 bg-blue-50/40 cursor-pointer border-l-2 border-accent">
+<div class="mt-0.5 text-red-500">
+<span class="material-symbols-outlined text-xl">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-primary truncate">api_specs_2023.pdf</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-[10px] font-mono text-success bg-green-50 px-1 rounded border border-green-100">INDEXED</span>
+<span class="text-[10px] text-text-muted">12.1 MB • Added 5h ago</span>
+</div>
+</div>
+<button class="text-text-muted hover:text-primary p-1">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+<!-- Item 3 -->
+<div class="group flex items-start gap-3 p-3 hover:bg-slate-50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-accent">
+<div class="mt-0.5 text-blue-500">
+<span class="material-symbols-outlined text-xl">article</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-primary truncate">security_audit_final.docx</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-[10px] font-mono text-warning bg-amber-50 px-1 rounded border border-amber-100">PROCESSING</span>
+<span class="text-[10px] text-text-muted">800 KB • Added 1m ago</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-text-muted hover:text-primary p-1">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Upload Zone -->
+<div class="p-4 bg-slate-50 border-t border-border">
+<div class="border border-dashed border-slate-300 rounded bg-white p-4 text-center cursor-pointer hover:border-accent hover:bg-blue-50/30 transition-all group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-accent mb-2">cloud_upload</span>
+<p class="text-xs font-medium text-primary">Drop files to upload</p>
+<p class="text-[10px] text-text-muted mt-1">PDF, DOCX, TXT (Max 50MB)</p>
+</div>
+</div>
+</aside>
+<!-- CENTER PANE: Verification Chat (40%) -->
+<section class="flex-1 min-w-[400px] flex flex-col bg-slate-50/30 relative">
+<!-- Pane Header -->
+<div class="flex items-center justify-between px-4 py-3 border-b border-border bg-white h-[53px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent text-lg">smart_toy</span>
+<h2 class="text-sm font-semibold text-primary">Verification Assistant</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 hover:bg-slate-100 rounded text-text-muted" title="Clear Chat">
+<span class="material-symbols-outlined text-lg">restart_alt</span>
+</button>
+<button class="p-1 hover:bg-slate-100 rounded text-text-muted" title="Settings">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+</div>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- System Welcome -->
+<div class="flex flex-col gap-1 max-w-2xl mx-auto w-full">
+<div class="flex items-center gap-2 mb-1">
+<div class="size-6 bg-primary text-white rounded-full flex items-center justify-center text-[10px] font-mono">AI</div>
+<span class="text-xs font-medium text-text-muted">Enterprise Clarity Bot</span>
+<span class="text-[10px] text-text-muted font-mono">10:42 AM</span>
+</div>
+<div class="bg-white border border-border rounded-sm p-4 text-sm text-primary shadow-sm">
+<p>I've indexed 3 documents in this workspace. You can ask me to verify specific claims, generate summaries, or cross-reference data points.</p>
+</div>
+</div>
+<!-- User Query -->
+<div class="flex flex-col gap-1 max-w-2xl mx-auto w-full items-end">
+<div class="flex items-center gap-2 mb-1 flex-row-reverse">
+<div class="size-6 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="text-xs font-medium text-text-muted">You</span>
+<span class="text-[10px] text-text-muted font-mono">10:45 AM</span>
+</div>
+<div class="bg-slate-100 border border-slate-200 rounded-sm p-3 text-sm text-primary max-w-[90%]">
+<p>What are the rate limits for the V2 transaction endpoint?</p>
+</div>
+</div>
+<!-- System Response with Citations -->
+<div class="flex flex-col gap-1 max-w-2xl mx-auto w-full">
+<div class="flex items-center gap-2 mb-1">
+<div class="size-6 bg-primary text-white rounded-full flex items-center justify-center text-[10px] font-mono">AI</div>
+<span class="text-xs font-medium text-text-muted">Enterprise Clarity Bot</span>
+<span class="text-[10px] text-text-muted font-mono">10:45 AM</span>
+</div>
+<div class="bg-white border border-border rounded-sm p-4 text-sm text-primary shadow-sm space-y-3">
+<p class="leading-relaxed">
+                            The V2 transaction endpoint enforces a rate limit of <strong class="font-medium text-slate-900">100 requests per minute</strong> per API key. This is defined as a hard limit implemented at the API Gateway level to prevent abuse.
+                            <button class="inline-flex items-center justify-center align-super text-[10px] font-bold text-accent bg-blue-50 border border-blue-100 px-1 rounded-sm ml-0.5 cursor-pointer hover:bg-blue-100 hover:border-blue-300 transition-colors" title="View Source">[1]</button>
+</p>
+<p class="leading-relaxed">
+                            Exceeding this limit will result in a <code class="bg-slate-100 border border-slate-200 px-1 py-0.5 rounded text-xs font-mono text-red-600">429 Too Many Requests</code> response. Clients are advised to implement exponential backoff strategies when encountering this error.
+                            <button class="inline-flex items-center justify-center align-super text-[10px] font-bold text-accent bg-blue-50 border border-blue-100 px-1 rounded-sm ml-0.5 cursor-pointer hover:bg-blue-100 hover:border-blue-300 transition-colors" title="View Source">[2]</button>
+</p>
+<div class="mt-3 pt-3 border-t border-border flex flex-col gap-2">
+<p class="text-[10px] font-mono uppercase text-text-muted tracking-wide mb-1">Sources Used</p>
+<div class="flex items-center gap-2 group cursor-pointer">
+<span class="flex items-center justify-center size-4 rounded bg-blue-100 text-accent text-[10px] font-bold border border-blue-200">1</span>
+<span class="text-xs text-text-main group-hover:text-accent truncate">api_specs_2023.pdf (Page 42)</span>
+</div>
+<div class="flex items-center gap-2 group cursor-pointer">
+<span class="flex items-center justify-center size-4 rounded bg-blue-100 text-accent text-[10px] font-bold border border-blue-200">2</span>
+<span class="text-xs text-text-main group-hover:text-accent truncate">arch_diagram_v2.pdf (Page 12)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-4 bg-white border-t border-border">
+<div class="relative">
+<textarea class="w-full bg-slate-50 border border-border rounded-sm text-sm p-3 pr-12 focus:ring-1 focus:ring-accent focus:border-accent focus:bg-white resize-none h-24 font-sans placeholder:text-slate-400" placeholder="Ask a question or verify a claim..."></textarea>
+<div class="absolute bottom-2 right-2 flex items-center gap-1">
+<button class="p-1.5 hover:bg-slate-200 rounded-sm text-text-muted transition-colors">
+<span class="material-symbols-outlined text-lg">attach_file</span>
+</button>
+<button class="p-1.5 bg-primary hover:bg-slate-800 text-white rounded-sm transition-colors shadow-sm">
+<span class="material-symbols-outlined text-lg">send</span>
+</button>
+</div>
+</div>
+<p class="text-[10px] text-center text-text-muted mt-2">AI can make mistakes. Verify important information.</p>
+</div>
+<!-- Resize Handle Overlay (Visual Only) -->
+<div class="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-accent/50 z-10 flex items-center justify-center group">
+<div class="h-8 w-1 bg-border group-hover:bg-accent rounded-full transition-colors"></div>
+</div>
+<div class="absolute left-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-accent/50 z-10 flex items-center justify-center group">
+<div class="h-8 w-1 bg-border group-hover:bg-accent rounded-full transition-colors"></div>
+</div>
+</section>
+<!-- RIGHT PANE: Document Viewer (30%) -->
+<aside class="w-[30%] min-w-[300px] flex flex-col border-l border-border bg-slate-100 relative">
+<!-- Pane Header -->
+<div class="flex items-center justify-between px-4 py-3 border-b border-border bg-white h-[53px]">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-red-500 text-lg">picture_as_pdf</span>
+<h2 class="text-sm font-semibold text-primary truncate" title="api_specs_2023.pdf">api_specs_2023.pdf</h2>
+</div>
+<div class="flex items-center gap-1 bg-slate-100 rounded-sm border border-border p-0.5">
+<button class="p-0.5 hover:bg-white hover:shadow-sm rounded-sm">
+<span class="material-symbols-outlined text-sm text-text-main">remove</span>
+</button>
+<span class="text-[10px] font-mono text-text-main px-1 w-8 text-center">100%</span>
+<button class="p-0.5 hover:bg-white hover:shadow-sm rounded-sm">
+<span class="material-symbols-outlined text-sm text-text-main">add</span>
+</button>
+</div>
+</div>
+<!-- PDF Viewer Mockup -->
+<div class="flex-1 overflow-y-auto bg-grid-slate p-6 flex justify-center">
+<!-- PDF Page Container -->
+<div class="w-full max-w-[600px] bg-white shadow-sm border border-border min-h-[800px] p-8 relative">
+<!-- Page Number -->
+<div class="absolute top-4 right-6 text-xs text-slate-300 font-mono">Page 42</div>
+<!-- Content Skeleton -->
+<div class="space-y-4">
+<div class="h-6 bg-slate-800 w-2/3 mb-6"></div> <!-- H1 -->
+<div class="space-y-2">
+<div class="h-3 bg-slate-200 w-full"></div>
+<div class="h-3 bg-slate-200 w-full"></div>
+<div class="h-3 bg-slate-200 w-5/6"></div>
+</div>
+<div class="h-4 bg-slate-600 w-1/3 mt-6 mb-2"></div> <!-- H2 -->
+<!-- Highlighted Section -->
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-2 bg-yellow-100/50 border border-yellow-300/50 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<!-- Active Citation Highlight -->
+<div class="relative bg-yellow-100/80 outline outline-2 outline-accent/20 rounded-sm p-1 -m-1">
+<div class="space-y-2">
+<div class="h-3 bg-slate-800 w-full opacity-80"></div>
+<div class="h-3 bg-slate-800 w-full opacity-80"></div>
+<div class="h-3 bg-slate-800 w-4/5 opacity-80"></div>
+</div>
+<!-- Anchor tag for visual cue -->
+<div class="absolute -right-8 top-0 bg-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm shadow-sm flex items-center">
+<span>#1</span>
+</div>
+</div>
+</div>
+<div class="space-y-2 mt-4">
+<div class="h-3 bg-slate-200 w-full"></div>
+<div class="h-3 bg-slate-200 w-11/12"></div>
+<div class="h-3 bg-slate-200 w-full"></div>
+<div class="h-3 bg-slate-200 w-3/4"></div>
+</div>
+<!-- Table Mockup -->
+<div class="mt-8 border border-slate-200 rounded-sm">
+<div class="h-8 bg-slate-50 border-b border-slate-200 flex items-center px-4">
+<div class="h-3 bg-slate-300 w-1/4"></div>
+</div>
+<div class="h-8 border-b border-slate-200 flex items-center px-4">
+<div class="h-3 bg-slate-100 w-full"></div>
+</div>
+<div class="h-8 border-b border-slate-200 flex items-center px-4">
+<div class="h-3 bg-slate-100 w-full"></div>
+</div>
+</div>
+<!-- Highlighted Section 2 (Inactive) -->
+<div class="mt-6 relative group cursor-pointer">
+<div class="space-y-2">
+<div class="h-3 bg-slate-200 w-full"></div>
+<div class="h-3 bg-slate-200 w-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Viewer Footer/Controls -->
+<div class="bg-white border-t border-border p-2 flex items-center justify-between">
+<button class="p-1 hover:bg-slate-100 rounded-sm text-text-muted disabled:opacity-50">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<div class="flex items-center gap-2">
+<input class="w-10 h-6 text-center text-xs font-mono border border-border rounded-sm focus:ring-1 focus:ring-accent focus:border-accent" type="text" value="42"/>
+<span class="text-xs text-text-muted font-mono">/ 148</span>
+</div>
+<button class="p-1 hover:bg-slate-100 rounded-sm text-text-muted">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</aside>
+</main>
+</body></html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Clarity - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0F172A",
+                        "primary-light": "#1e5df1", // Keeping the requested primary from prompt for highlights
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface": "#FFFFFF",
+                        "border-color": "#E2E8F0",
+                        "text-main": "#334155",
+                        "text-muted": "#94A3B8",
+                    },
+                    fontFamily: {
+                        "display": ['"IBM Plex Sans"', "Inter", "sans-serif"],
+                        "body": ['"IBM Plex Sans"', "Inter", "sans-serif"],
+                        "mono": ['"JetBrains Mono"', "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px",
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "6px",
+                        "full": "9999px",
+                    },
+                    spacing: {
+                        "dense": "2px",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for a more technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        
+        /* Grid lines pattern for background */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #F1F5F9 1px, transparent 1px),
+                linear-gradient(to bottom, #F1F5F9 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main font-body antialiased h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex-none h-14 bg-surface border-b border-border-color flex items-center justify-between px-6 z-10 relative">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-6 bg-primary text-white flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</div>
+<h1 class="text-primary font-bold text-lg tracking-tight">Enterprise Clarity</h1>
+</div>
+<nav class="hidden md:flex items-center gap-1">
+<a class="px-3 py-1.5 text-sm font-medium text-primary bg-background-light border border-border-color rounded-sm" href="#">Dashboard</a>
+<a class="px-3 py-1.5 text-sm font-medium text-text-muted hover:text-text-main transition-colors" href="#">KB Management</a>
+<a class="px-3 py-1.5 text-sm font-medium text-text-muted hover:text-text-main transition-colors" href="#">FSD Generator</a>
+<a class="px-3 py-1.5 text-sm font-medium text-text-muted hover:text-text-main transition-colors" href="#">Approvals</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-background-light border border-border-color rounded-sm px-3 py-1.5 w-64 focus-within:ring-1 focus-within:ring-primary-light focus-within:border-primary-light transition-all">
+<span class="material-symbols-outlined text-text-muted text-[18px]">search</span>
+<input class="bg-transparent border-none text-xs w-full focus:ring-0 placeholder:text-text-muted font-mono h-5 text-text-main" placeholder="Search KBs, FSDs, or entities..." type="text"/>
+<span class="text-[10px] text-text-muted border border-border-color rounded px-1 bg-white">/</span>
+</div>
+<button class="relative p-1.5 text-text-muted hover:text-text-main hover:bg-background-light rounded-sm transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border border-white"></span>
+</button>
+<div class="h-8 w-8 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs">
+                JD
+            </div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-hidden flex flex-col p-6 gap-6 bg-grid-pattern">
+<!-- Header Section -->
+<div class="flex-none flex items-end justify-between pb-2 border-b border-border-color/50">
+<div>
+<p class="font-mono text-xs text-text-muted mb-1">SYSTEM_STATUS: ONLINE</p>
+<h2 class="text-2xl font-semibold text-primary">Operational Overview</h2>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-text-muted font-mono">LAST_SYNC: 14:02:23 UTC</span>
+<button class="flex items-center gap-2 bg-white border border-border-color hover:border-primary-light text-primary hover:text-primary-light px-3 py-1.5 rounded-sm transition-all text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+                    Refresh Data
+                </button>
+</div>
+</div>
+<!-- Metric Cards Row -->
+<div class="flex-none grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface border border-border-color p-5 rounded-sm flex flex-col justify-between h-32 hover:border-orange-200 transition-colors group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-xs text-text-muted uppercase tracking-wider">Pending Approvals</span>
+<span class="material-symbols-outlined text-orange-500 text-[20px] bg-orange-50 p-1 rounded-sm">pending_actions</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-4xl font-bold text-primary tabular-nums">12</span>
+<span class="text-xs text-orange-600 font-medium mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+                        4 since yesterday
+                    </span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface border border-border-color p-5 rounded-sm flex flex-col justify-between h-32 hover:border-blue-200 transition-colors group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-xs text-text-muted uppercase tracking-wider">Active Knowledge Bases</span>
+<span class="material-symbols-outlined text-blue-600 text-[20px] bg-blue-50 p-1 rounded-sm">library_books</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-4xl font-bold text-primary tabular-nums">84</span>
+<span class="text-xs text-text-muted mb-1.5">Across 12 projects</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface border border-border-color p-5 rounded-sm flex flex-col justify-between h-32 hover:border-green-200 transition-colors group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-xs text-text-muted uppercase tracking-wider">FSDs Generated</span>
+<span class="material-symbols-outlined text-green-600 text-[20px] bg-green-50 p-1 rounded-sm">description</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-4xl font-bold text-primary tabular-nums">315</span>
+<span class="text-xs text-green-600 font-medium mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        +12% this week
+                    </span>
+</div>
+</div>
+</div>
+<!-- Main Grid Area -->
+<div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Action Table (My Tasks) -->
+<div class="lg:col-span-2 bg-surface border border-border-color rounded-sm flex flex-col">
+<div class="flex-none px-5 py-4 border-b border-border-color flex justify-between items-center bg-gray-50/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-muted text-[20px]">assignment_turned_in</span>
+<h3 class="font-bold text-sm text-primary uppercase tracking-wide">My Tasks</h3>
+<span class="bg-primary/10 text-primary text-[10px] font-mono px-1.5 py-0.5 rounded-sm">5 PENDING</span>
+</div>
+<div class="flex gap-2">
+<button class="text-xs font-medium text-text-muted hover:text-primary transition-colors">Filter</button>
+<button class="text-xs font-medium text-text-muted hover:text-primary transition-colors">Sort</button>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-background-light sticky top-0 z-10 border-b border-border-color">
+<tr>
+<th class="px-5 py-3 text-[11px] font-mono text-text-muted uppercase tracking-wider font-medium">Task Type</th>
+<th class="px-5 py-3 text-[11px] font-mono text-text-muted uppercase tracking-wider font-medium">Linked Entity</th>
+<th class="px-5 py-3 text-[11px] font-mono text-text-muted uppercase tracking-wider font-medium">Due Date</th>
+<th class="px-5 py-3 text-[11px] font-mono text-text-muted uppercase tracking-wider font-medium text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-color/60 text-sm">
+<tr class="group hover:bg-blue-50/30 transition-colors">
+<td class="px-5 py-3.5 align-middle">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-orange-500"></div>
+<span class="font-medium text-primary">Review KB Snapshot</span>
+</div>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs bg-background-light border border-border-color px-1.5 py-0.5 rounded text-text-main">KB-102</span>
+<span class="text-xs text-text-muted ml-2">Payments V2</span>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs text-orange-600 font-medium">Today, 17:00</span>
+</td>
+<td class="px-5 py-3.5 align-middle text-right">
+<button class="text-primary-light hover:text-blue-700 text-xs font-bold uppercase tracking-wider border border-transparent hover:border-primary-light/20 hover:bg-primary-light/5 px-3 py-1.5 rounded-sm transition-all">
+                                        Review
+                                    </button>
+</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-colors">
+<td class="px-5 py-3.5 align-middle">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-blue-500"></div>
+<span class="font-medium text-primary">Verify Sources</span>
+</div>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs bg-background-light border border-border-color px-1.5 py-0.5 rounded text-text-main">PRJ-ALPHA</span>
+<span class="text-xs text-text-muted ml-2">Compliance Audit</span>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs text-text-main">Tomorrow, 09:00</span>
+</td>
+<td class="px-5 py-3.5 align-middle text-right">
+<button class="text-primary-light hover:text-blue-700 text-xs font-bold uppercase tracking-wider border border-transparent hover:border-primary-light/20 hover:bg-primary-light/5 px-3 py-1.5 rounded-sm transition-all">
+                                        Resume
+                                    </button>
+</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-colors">
+<td class="px-5 py-3.5 align-middle">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-orange-500"></div>
+<span class="font-medium text-primary">Approve Final FSD</span>
+</div>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs bg-background-light border border-border-color px-1.5 py-0.5 rounded text-text-main">FSD-401</span>
+<span class="text-xs text-text-muted ml-2">Checkout Flow</span>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs text-text-main">Oct 24, 14:00</span>
+</td>
+<td class="px-5 py-3.5 align-middle text-right">
+<button class="text-primary-light hover:text-blue-700 text-xs font-bold uppercase tracking-wider border border-transparent hover:border-primary-light/20 hover:bg-primary-light/5 px-3 py-1.5 rounded-sm transition-all">
+                                        Approve
+                                    </button>
+</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-colors">
+<td class="px-5 py-3.5 align-middle">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-slate-300"></div>
+<span class="font-medium text-text-muted">Review Archived KB</span>
+</div>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs bg-background-light border border-border-color px-1.5 py-0.5 rounded text-text-muted">KB-089</span>
+<span class="text-xs text-text-muted ml-2">Legacy API</span>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs text-text-muted">Nov 01, 10:00</span>
+</td>
+<td class="px-5 py-3.5 align-middle text-right">
+<button class="text-text-muted hover:text-primary text-xs font-bold uppercase tracking-wider border border-transparent hover:border-border-color hover:bg-background-light px-3 py-1.5 rounded-sm transition-all">
+                                        View
+                                    </button>
+</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-colors">
+<td class="px-5 py-3.5 align-middle">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-slate-300"></div>
+<span class="font-medium text-text-muted">System Maintenance</span>
+</div>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs bg-background-light border border-border-color px-1.5 py-0.5 rounded text-text-muted">SYS-001</span>
+<span class="text-xs text-text-muted ml-2">Core Upgrade</span>
+</td>
+<td class="px-5 py-3.5 align-middle">
+<span class="font-mono text-xs text-text-muted">Nov 15, 00:00</span>
+</td>
+<td class="px-5 py-3.5 align-middle text-right">
+<button class="text-text-muted hover:text-primary text-xs font-bold uppercase tracking-wider border border-transparent hover:border-border-color hover:bg-background-light px-3 py-1.5 rounded-sm transition-all">
+                                        Details
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column: Activity Feed -->
+<div class="bg-surface border border-border-color rounded-sm flex flex-col">
+<div class="flex-none px-5 py-4 border-b border-border-color flex justify-between items-center bg-gray-50/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-muted text-[20px]">history</span>
+<h3 class="font-bold text-sm text-primary uppercase tracking-wide">Activity Feed</h3>
+</div>
+</div>
+<div class="flex-1 overflow-auto p-5">
+<div class="relative pl-2 space-y-8">
+<!-- Line connecting items -->
+<div class="absolute left-[15px] top-2 bottom-2 w-px bg-border-color"></div>
+<!-- Item 1 -->
+<div class="relative flex gap-4 items-start group">
+<div class="relative z-10 flex-none bg-surface p-1">
+<div class="size-2.5 rounded-full border border-primary-light bg-primary-light group-hover:ring-4 group-hover:ring-primary-light/10 transition-all"></div>
+</div>
+<div class="flex flex-col gap-1 -mt-1">
+<p class="text-xs text-text-main leading-relaxed">
+<span class="font-semibold text-primary">Sarah M.</span> submitted <span class="font-mono text-primary bg-slate-100 px-1 rounded">KB-102</span> for review.
+                                </p>
+<span class="text-[10px] font-mono text-text-muted">10m ago</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="relative flex gap-4 items-start group">
+<div class="relative z-10 flex-none bg-surface p-1">
+<div class="size-2.5 rounded-full border border-green-500 bg-white group-hover:bg-green-500 transition-all"></div>
+</div>
+<div class="flex flex-col gap-1 -mt-1">
+<p class="text-xs text-text-main leading-relaxed">
+                                    System auto-indexed <span class="font-semibold text-primary">3 documents</span> for Project Alpha.
+                                </p>
+<span class="text-[10px] font-mono text-text-muted">2h ago</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="relative flex gap-4 items-start group">
+<div class="relative z-10 flex-none bg-surface p-1">
+<div class="size-2.5 rounded-full border border-blue-500 bg-white group-hover:bg-blue-500 transition-all"></div>
+</div>
+<div class="flex flex-col gap-1 -mt-1">
+<p class="text-xs text-text-main leading-relaxed">
+<span class="font-semibold text-primary">Jim D.</span> updated scope for <span class="font-mono text-primary bg-slate-100 px-1 rounded">FSD-401</span>.
+                                </p>
+<span class="text-[10px] font-mono text-text-muted">4h ago</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="relative flex gap-4 items-start group">
+<div class="relative z-10 flex-none bg-surface p-1">
+<div class="size-2.5 rounded-full border border-text-muted bg-white group-hover:bg-text-muted transition-all"></div>
+</div>
+<div class="flex flex-col gap-1 -mt-1">
+<p class="text-xs text-text-main leading-relaxed">
+<span class="font-semibold text-primary">System</span> generated daily backup snapshot.
+                                </p>
+<span class="text-[10px] font-mono text-text-muted">06:00 AM</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="relative flex gap-4 items-start group">
+<div class="relative z-10 flex-none bg-surface p-1">
+<div class="size-2.5 rounded-full border border-text-muted bg-white group-hover:bg-text-muted transition-all"></div>
+</div>
+<div class="flex flex-col gap-1 -mt-1">
+<p class="text-xs text-text-main leading-relaxed">
+<span class="font-semibold text-primary">Alex R.</span> archived <span class="font-mono text-primary bg-slate-100 px-1 rounded">KB-099</span>.
+                                </p>
+<span class="text-[10px] font-mono text-text-muted">Yesterday</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

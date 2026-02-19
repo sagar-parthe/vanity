@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KB Management - Enterprise Clarity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e5df1", // Keeping system primary, but will lean heavily on Slates for the Swiss look
+                        "background-light": "#F8FAFC", // Slate 50
+                        "background-dark": "#0F172A", // Slate 900
+                        "surface": "#FFFFFF",
+                        "border-color": "#E2E8F0", // Slate 200
+                        "text-main": "#0F172A", // Slate 900
+                        "text-body": "#334155", // Slate 700
+                        "text-muted": "#64748B", // Slate 500
+                    },
+                    fontFamily: {
+                        "display": ["IBM Plex Sans", "Inter", "sans-serif"],
+                        "body": ["IBM Plex Sans", "Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px",
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "6px",
+                        "full": "9999px",
+                    },
+                    boxShadow: {
+                        "none": "none",
+                        "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for that technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        
+        /* Swiss Grid Lines helper */
+        .swiss-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+                              linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-body font-body antialiased min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 bg-surface border-b border-border-color h-14 flex items-center justify-between px-6 shadow-sm">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-text-main">
+<div class="size-6 bg-primary flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-white text-[16px]">grid_view</span>
+</div>
+<h1 class="text-lg font-semibold tracking-tight font-display">Enterprise Clarity</h1>
+</div>
+<nav class="hidden md:flex items-center gap-1 ml-4 border-l border-border-color pl-6 h-8">
+<a class="px-3 py-1.5 text-sm font-medium text-text-muted hover:text-text-main rounded-sm transition-colors" href="#">Dashboard</a>
+<a class="px-3 py-1.5 text-sm font-medium text-text-main bg-slate-100 rounded-sm" href="#">KB Management</a>
+<a class="px-3 py-1.5 text-sm font-medium text-text-muted hover:text-text-main rounded-sm transition-colors" href="#">FSD Generator</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute top-1/2 right-0 -translate-y-1/2 size-2 bg-red-500 rounded-full border-2 border-surface"></span>
+<button class="p-2 text-text-muted hover:text-text-main hover:bg-slate-50 rounded-sm">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+<div class="h-8 w-8 bg-slate-200 rounded-sm overflow-hidden border border-slate-300">
+<img alt="User Profile" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcagwAzH83IR74IMPBe29fJQq8MyVSab29HaF_TQRHG92EuDr7Z5TtaJaMiwgG2L7Z8mq3kyXBI6n_KdlMXMCzoCS10fPBp5EvpTF-99V3uFyw7QTazsG3YIBHByiWlbnHdl7Cx1h3Oozvf2jCQijNxr_BMcbiwcCV5WIchkSPMJ9USIKNs1-N687J6jQ5QUMD8J7bCH0bLbXqnAQPV209tT1g0e9xl2Jb3Z3OimFTA5ws04jwufGrRFBMyZWIbRHMyKLrHeHmVTeI"/>
+</div>
+</div>
+</header>
+<!-- Main Layout -->
+<main class="flex-1 flex flex-col w-full max-w-[1920px] mx-auto swiss-grid">
+<!-- Header & Stats Area -->
+<div class="px-6 py-8 border-b border-border-color bg-surface/50 backdrop-blur-sm">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 text-text-muted text-sm font-mono mb-1">
+<span>WORKSPACE</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span>INVENTORY</span>
+</div>
+<h2 class="text-3xl font-bold text-text-main tracking-tight font-display">Knowledge Base Inventory</h2>
+<p class="text-text-muted mt-2 max-w-2xl text-sm">
+                        Manage documentation sources, verification statuses, and version history. All changes are logged for compliance.
+                    </p>
+</div>
+<div class="flex gap-4">
+<div class="px-4 py-2 bg-white border border-border-color rounded-sm shadow-sm flex flex-col min-w-[120px]">
+<span class="text-xs font-mono text-text-muted uppercase">Total KBs</span>
+<span class="text-2xl font-bold text-text-main">142</span>
+</div>
+<div class="px-4 py-2 bg-white border border-border-color rounded-sm shadow-sm flex flex-col min-w-[120px]">
+<span class="text-xs font-mono text-text-muted uppercase">Pending</span>
+<span class="text-2xl font-bold text-amber-600">8</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Toolbar -->
+<div class="sticky top-14 z-40 bg-surface border-b border-border-color px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-1 items-center gap-3 min-w-[280px]">
+<div class="relative flex-1 max-w-md group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-text-muted text-[20px]">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-sm leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm font-mono transition-shadow" placeholder="Search by ID, Name, or Tag..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-2 flex items-center">
+<kbd class="inline-flex items-center border border-slate-200 rounded px-2 text-xs font-mono font-medium text-slate-400">⌘K</kbd>
+</div>
+</div>
+<div class="h-6 w-px bg-slate-200 mx-1"></div>
+<!-- Filters -->
+<div class="flex items-center gap-2">
+<div class="relative">
+<select class="appearance-none bg-white border border-slate-300 text-text-body py-1.5 pl-3 pr-8 rounded-sm text-sm font-medium focus:outline-none focus:border-primary hover:bg-slate-50 cursor-pointer">
+<option>All Statuses</option>
+<option>Draft</option>
+<option>Pending</option>
+<option>Approved</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-text-muted">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+</div>
+<div class="relative">
+<select class="appearance-none bg-white border border-slate-300 text-text-body py-1.5 pl-3 pr-8 rounded-sm text-sm font-medium focus:outline-none focus:border-primary hover:bg-slate-50 cursor-pointer">
+<option>All Owners</option>
+<option>Me</option>
+<option>Team Alpha</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-text-muted">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center p-2 text-text-muted hover:text-text-main border border-transparent hover:border-slate-200 rounded-sm transition-all" title="View Settings">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<button class="flex items-center justify-center p-2 text-text-muted hover:text-text-main border border-transparent hover:border-slate-200 rounded-sm transition-all" title="Export CSV">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+<button class="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-sm text-sm font-semibold tracking-wide transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>NEW KNOWLEDGE BASE</span>
+</button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="flex-1 overflow-x-auto bg-white min-h-[600px]">
+<table class="min-w-full table-fixed text-left border-collapse">
+<thead class="bg-slate-50 border-b border-border-color sticky top-0 z-10">
+<tr>
+<th class="w-12 px-4 py-3 border-r border-transparent" scope="col">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</th>
+<th class="w-32 px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent" scope="col">ID</th>
+<th class="w-auto px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent cursor-pointer hover:text-text-main group" scope="col">
+                            Name <span class="material-symbols-outlined text-[14px] align-middle opacity-0 group-hover:opacity-100">arrow_downward</span>
+</th>
+<th class="w-24 px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent" scope="col">Ver.</th>
+<th class="w-32 px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent" scope="col">Status</th>
+<th class="w-48 px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent" scope="col">Last Updated</th>
+<th class="w-40 px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider font-display border-r border-transparent" scope="col">Owner</th>
+<th class="w-32 px-4 py-3 text-right text-xs font-semibold text-text-muted uppercase tracking-wider font-display" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1: Approved -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-104</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">Payment Gateway Integration V2</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v1.2</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                                Approved
+                            </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 24, 14:30</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-purple-200">SJ</div>
+                            Sarah Jenkins
+                        </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Pending -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-103</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">User Authentication Protocols</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v2.0</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 font-mono">
+                                Pending
+                            </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 24, 11:15</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-blue-200">MK</div>
+                            Mike K.
+                        </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Draft -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-102</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">Legacy System Migration</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v0.9</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200 font-mono">
+                                Draft
+                            </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 23, 09:45</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-teal-200">AL</div>
+                            Ana Lopez
+                        </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Approved -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-101</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">GDPR Compliance Guidelines</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v3.1</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                               Approved
+                           </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 22, 16:20</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-orange-200">DP</div>
+                           David P.
+                       </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Approved -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-100</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">API Rate Limiting Policies</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v1.0</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                                Approved
+                            </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 21, 10:00</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-purple-200">SJ</div>
+                            Sarah Jenkins
+                        </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Draft -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-099</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">Mobile App SDK</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v0.4</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200 font-mono">
+                                Draft
+                            </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 20, 13:45</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-teal-200">AL</div>
+                            Ana Lopez
+                        </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 7: Pending -->
+<tr class="group hover:bg-slate-50 transition-colors h-[48px]">
+<td class="px-4 py-2 whitespace-nowrap">
+<input class="rounded-[2px] border-slate-300 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" type="checkbox"/>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted group-hover:text-text-main">KB-098</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-text-main font-display">Cloud Infrastructure Specs</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm font-mono text-text-muted">v2.3</td>
+<td class="px-4 py-2 whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 font-mono">
+                               Pending
+                           </span>
+</td>
+<td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-text-muted">Oct 19, 08:30</td>
+<td class="px-4 py-2 whitespace-nowrap text-sm text-text-body flex items-center gap-2">
+<div class="size-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold border border-blue-200">MK</div>
+                           Mike K.
+                       </td>
+<td class="px-4 py-2 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-primary rounded-sm hover:bg-blue-50" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit_square</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-text-main rounded-sm hover:bg-slate-200" title="History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+<button class="p-1.5 text-text-muted hover:text-red-600 rounded-sm hover:bg-red-50" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="border-t border-border-color bg-white px-6 py-3 flex items-center justify-between">
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-xs text-text-muted font-mono">
+                    Showing
+                    <span class="font-medium text-text-main">1</span>
+                    to
+                    <span class="font-medium text-text-main">7</span>
+                    of
+                    <span class="font-medium text-text-main">142</span>
+                    results
+                  </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l border border-slate-300 bg-white text-sm font-medium text-text-muted hover:bg-slate-50" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</a>
+<a aria-current="page" class="z-10 bg-slate-50 border-slate-500 text-text-main relative inline-flex items-center px-4 py-2 border text-sm font-medium font-mono" href="#">
+                      1
+                    </a>
+<a class="bg-white border-slate-300 text-text-muted hover:bg-slate-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium font-mono" href="#">
+                      2
+                    </a>
+<a class="bg-white border-slate-300 text-text-muted hover:bg-slate-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium font-mono" href="#">
+                      3
+                    </a>
+<span class="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700">
+                      ...
+                    </span>
+<a class="bg-white border-slate-300 text-text-muted hover:bg-slate-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium font-mono" href="#">
+                      14
+                    </a>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r border border-slate-300 bg-white text-sm font-medium text-text-muted hover:bg-slate-50" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Clarity - FSD Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0F172A", // Slate 900
+                        "primary-hover": "#1E293B", // Slate 800
+                        secondary: "#334155", // Slate 700
+                        muted: "#94A3B8", // Slate 400
+                        border: "#E2E8F0", // Slate 200
+                        background: "#F8FAFC", // Slate 50
+                        surface: "#FFFFFF",
+                        accent: "#2563EB", // Royal Blue
+                        success: "#059669", // Emerald 600
+                        warning: "#D97706", // Amber 600
+                    },
+                    fontFamily: {
+                        sans: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        display: ['"Inter"', 'sans-serif'], // Keep generic display for compatibility if needed
+                    },
+                    borderRadius: {
+                        DEFAULT: "2px",
+                        sm: "2px",
+                        md: "4px",
+                        lg: "6px",
+                    },
+                    boxShadow: {
+                        none: 'none',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "IBM Plex Sans", sans-serif;
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        .font-mono {
+            font-family: "JetBrains Mono", monospace;
+        }
+        /* Custom scrollbar for Swiss feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8; 
+        }
+        /* Document thumbnail simulation pattern */
+        .doc-pattern {
+            background-image: linear-gradient(#CBD5E1 1px, transparent 1px);
+            background-size: 100% 6px;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="h-14 bg-surface border-b border-border flex items-center justify-between px-6 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary text-surface flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-[20px]">dataset</span>
+</div>
+<div class="h-4 w-px bg-border"></div>
+<nav class="flex items-center gap-2 text-sm font-medium">
+<a class="text-secondary hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="text-muted">/</span>
+<span class="text-primary font-semibold">FSD Collection</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 border border-border rounded-sm">
+<div class="size-2 rounded-full bg-success"></div>
+<span class="text-xs font-mono text-secondary">SYSTEM_ONLINE</span>
+</div>
+<button class="flex items-center justify-center size-8 hover:bg-slate-100 rounded-sm text-secondary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-8 rounded-sm bg-slate-200 border border-border overflow-hidden" data-alt="User profile avatar gradient" style="background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);">
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col max-w-[1600px] w-full mx-auto p-6 gap-6">
+<!-- Header Section -->
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl font-semibold text-primary tracking-tight">FSD Collection</h1>
+<p class="text-sm text-secondary">Archival library of finalized specifications with lineage tracking.</p>
+</div>
+<!-- Controls Toolbar -->
+<div class="bg-surface border border-border p-3 flex flex-wrap gap-4 items-center justify-between rounded-sm shadow-sm">
+<!-- Search & Filters -->
+<div class="flex flex-1 items-center gap-3 min-w-[320px]">
+<div class="relative flex-1 max-w-lg group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-accent">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-sm text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted font-mono" placeholder="Search by title, ID, or content..." type="text"/>
+</div>
+<div class="h-8 w-px bg-border mx-1"></div>
+<!-- Filters -->
+<div class="flex items-center gap-2">
+<div class="relative group">
+<select class="appearance-none bg-background border border-border text-secondary text-sm pl-3 pr-8 py-2 rounded-sm focus:outline-none focus:border-accent hover:border-slate-300 cursor-pointer">
+<option>All Clients</option>
+<option>Acme Corp</option>
+<option>Globex Inc</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-muted pointer-events-none text-lg">arrow_drop_down</span>
+</div>
+<div class="relative group">
+<select class="appearance-none bg-background border border-border text-secondary text-sm pl-3 pr-8 py-2 rounded-sm focus:outline-none focus:border-accent hover:border-slate-300 cursor-pointer">
+<option>Date: Newest</option>
+<option>Date: Oldest</option>
+<option>Title: A-Z</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-muted pointer-events-none text-lg">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- View Toggles & Actions -->
+<div class="flex items-center gap-3">
+<span class="text-xs font-mono text-muted uppercase tracking-wider hidden sm:block">Display:</span>
+<div class="flex bg-background border border-border rounded-sm p-0.5">
+<button class="p-1.5 rounded-sm bg-white shadow-sm text-primary border border-border/50">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+</button>
+<button class="p-1.5 rounded-sm text-muted hover:text-secondary hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[20px]">view_list</span>
+</button>
+</div>
+<button class="bg-primary hover:bg-primary-hover text-surface text-sm font-medium px-4 py-2 rounded-sm flex items-center gap-2 transition-colors ml-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="uppercase tracking-wide text-xs">New Spec</span>
+</button>
+</div>
+</div>
+<!-- Document Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+<!-- Card 1 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Thumbnail Area -->
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<!-- Paper Simulation -->
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-3/4 bg-slate-800 rounded-sm mb-2"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-5/6 bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="mt-4 flex flex-col gap-1.5 opacity-40">
+<div class="h-1 w-full bg-slate-300 rounded-sm"></div>
+<div class="h-1 w-11/12 bg-slate-300 rounded-sm"></div>
+<div class="h-1 w-full bg-slate-300 rounded-sm"></div>
+<div class="h-1 w-4/5 bg-slate-300 rounded-sm"></div>
+<div class="h-1 w-full bg-slate-300 rounded-sm"></div>
+</div>
+<!-- Abstract technical diagram -->
+<div class="mt-6 border border-dashed border-slate-300 h-24 w-full flex items-center justify-center bg-slate-50">
+<div class="size-8 rounded-full border border-slate-300"></div>
+<div class="w-8 h-px bg-slate-300"></div>
+<div class="size-8 border border-slate-300 transform rotate-45"></div>
+</div>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-accent uppercase tracking-wider bg-accent/10 px-1.5 py-0.5 rounded-sm border border-accent/20">Finalized</span>
+<span class="text-[11px] font-mono text-muted">OCT 12, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">Payments V2 API Spec</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Acme Corp</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v2.1.0</span>
+</div>
+<span class="text-[10px] text-muted font-mono">PDF • 2.4MB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-2/3 bg-slate-800 rounded-sm mb-2"></div>
+<div class="flex gap-2 mb-2">
+<div class="h-24 w-1/3 bg-slate-100 border border-slate-200"></div>
+<div class="flex-1 flex flex-col gap-1.5">
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-3/4 bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+</div>
+</div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-5/6 bg-slate-200 rounded-sm"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-accent uppercase tracking-wider bg-accent/10 px-1.5 py-0.5 rounded-sm border border-accent/20">Finalized</span>
+<span class="text-[11px] font-mono text-muted">OCT 10, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">User Auth Flow</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Globex Inc</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v1.0.4</span>
+</div>
+<span class="text-[10px] text-muted font-mono">DOCX • 800KB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-1/2 bg-slate-800 rounded-sm mb-4"></div>
+<div class="w-full border-b border-slate-200 mb-2"></div>
+<div class="grid grid-cols-2 gap-2">
+<div class="h-8 bg-slate-50 border border-slate-100"></div>
+<div class="h-8 bg-slate-50 border border-slate-100"></div>
+<div class="h-8 bg-slate-50 border border-slate-100"></div>
+<div class="h-8 bg-slate-50 border border-slate-100"></div>
+</div>
+<div class="mt-2 h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-2/3 bg-slate-200 rounded-sm"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-muted uppercase tracking-wider bg-slate-100 px-1.5 py-0.5 rounded-sm border border-border">Archived</span>
+<span class="text-[11px] font-mono text-muted">SEP 28, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">Legacy Data Migration</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Internal</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v1.0.0</span>
+</div>
+<span class="text-[10px] text-muted font-mono">PDF • 5.1MB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-3/4 bg-slate-800 rounded-sm mb-2"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="bg-slate-50 border border-slate-200 p-2 mt-2">
+<div class="h-1 w-full bg-slate-300 mb-1"></div>
+<div class="h-1 w-3/4 bg-slate-300"></div>
+</div>
+<div class="mt-auto h-1.5 w-1/2 bg-slate-200 rounded-sm self-end"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-accent uppercase tracking-wider bg-accent/10 px-1.5 py-0.5 rounded-sm border border-accent/20">Finalized</span>
+<span class="text-[11px] font-mono text-muted">SEP 15, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">GDPR Compliance Review</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Stark Ind</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v1.2.0</span>
+</div>
+<span class="text-[10px] text-muted font-mono">PDF • 1.2MB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-1/2 bg-slate-800 rounded-sm mb-2"></div>
+<div class="h-24 w-full bg-slate-50 border border-dashed border-slate-300 flex items-center justify-center">
+<span class="text-[8px] font-mono text-slate-400">DIAGRAM_A1</span>
+</div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-sm"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-accent uppercase tracking-wider bg-accent/10 px-1.5 py-0.5 rounded-sm border border-accent/20">Finalized</span>
+<span class="text-[11px] font-mono text-muted">AUG 30, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">System Architecture v3</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Cyberdyne</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v3.0.0</span>
+</div>
+<span class="text-[10px] text-muted font-mono">PDF • 12MB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-200 rounded-sm overflow-hidden relative">
+<div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white border border-border p-1.5 rounded-sm shadow-sm hover:text-accent text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<div class="aspect-[1/1.4] bg-slate-100 border-b border-border relative p-6 flex justify-center items-start overflow-hidden group-hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="w-full h-full bg-white shadow-sm border border-border p-4 flex flex-col gap-3 transform group-hover:-translate-y-1 transition-transform duration-300 origin-bottom">
+<div class="h-3 w-3/4 bg-slate-800 rounded-sm mb-2"></div>
+<div class="flex gap-2">
+<div class="h-2 w-2 bg-slate-300 rounded-full"></div>
+<div class="h-2 w-full bg-slate-100 rounded-sm"></div>
+</div>
+<div class="flex gap-2">
+<div class="h-2 w-2 bg-slate-300 rounded-full"></div>
+<div class="h-2 w-full bg-slate-100 rounded-sm"></div>
+</div>
+<div class="flex gap-2">
+<div class="h-2 w-2 bg-slate-300 rounded-full"></div>
+<div class="h-2 w-full bg-slate-100 rounded-sm"></div>
+</div>
+<div class="mt-4 border-t border-slate-200 pt-2 h-1.5 w-full bg-slate-200"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-mono font-bold text-muted uppercase tracking-wider bg-slate-100 px-1.5 py-0.5 rounded-sm border border-border">Archived</span>
+<span class="text-[11px] font-mono text-muted">AUG 12, 2023</span>
+</div>
+<h3 class="font-sans font-semibold text-primary text-base leading-tight group-hover:text-accent transition-colors truncate">Audit Logs Protocol</h3>
+<p class="text-xs text-secondary mt-1 truncate">Client: Internal</p>
+</div>
+<div class="border-t border-border pt-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="px-1.5 py-0.5 bg-slate-100 border border-border rounded-sm">
+<span class="text-[11px] font-mono text-secondary font-medium">v1.0.2</span>
+</div>
+<span class="text-[10px] text-muted font-mono">PDF • 900KB</span>
+</div>
+<button class="text-secondary hover:text-accent transition-colors" title="Download">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination / Footer -->
+<div class="mt-4 flex items-center justify-between border-t border-border pt-6">
+<div class="text-xs font-mono text-muted">SHOWING 1-6 OF 248 RECORDS</div>
+<div class="flex gap-1">
+<button class="px-3 py-1.5 border border-border rounded-sm text-sm text-secondary hover:bg-slate-100 disabled:opacity-50" disabled="">Previous</button>
+<button class="px-3 py-1.5 bg-primary text-white border border-primary rounded-sm text-sm font-medium">1</button>
+<button class="px-3 py-1.5 border border-border rounded-sm text-sm text-secondary hover:bg-slate-100">2</button>
+<button class="px-3 py-1.5 border border-border rounded-sm text-sm text-secondary hover:bg-slate-100">3</button>
+<span class="px-2 py-1.5 text-muted">...</span>
+<button class="px-3 py-1.5 border border-border rounded-sm text-sm text-secondary hover:bg-slate-100">Next</button>
+</div>
+</div>
+</main>
+</body></html>

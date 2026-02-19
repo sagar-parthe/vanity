@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FSD Generator Wizard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0F172A", // Slate 900
+                        "primary-hover": "#1E293B", // Slate 800
+                        background: "#F8FAFC", // Slate 50
+                        surface: "#FFFFFF",
+                        border: "#E2E8F0", // Slate 200
+                        muted: "#94A3B8", // Slate 400
+                        text: "#334155", // Slate 700
+                        accent: "#2563EB", // Royal Blue
+                        success: "#059669", // Emerald 600
+                        warning: "#D97706", // Amber 600
+                    },
+                    fontFamily: {
+                        sans: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    borderRadius: {
+                        DEFAULT: "2px",
+                        sm: "2px",
+                        md: "4px",
+                        lg: "6px",
+                    },
+                    boxShadow: {
+                        'modal': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        
+        /* Smooth fade in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+
+        /* Loading stripe animation */
+        @keyframes stripe-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 28px 0; }
+        }
+        .loading-stripe {
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 28px 28px;
+            animation: stripe-move 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-200 min-h-screen flex items-center justify-center font-sans antialiased text-text selection:bg-accent/20">
+<!-- Overlay Backdrop -->
+<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-[1px] z-40"></div>
+<!-- Modal Container -->
+<div class="relative z-50 w-full max-w-[600px] bg-surface border border-border shadow-modal rounded flex flex-col animate-fade-in overflow-hidden">
+<!-- Header / Stepper -->
+<div class="px-6 py-4 border-b border-border bg-slate-50/50">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-sm font-semibold uppercase tracking-wide text-primary">FSD Generator</h2>
+<span class="font-mono text-xs text-muted">ID: GEN-2024-882</span>
+</div>
+<!-- Stepper Indicators -->
+<div class="flex items-center gap-2 mt-4">
+<!-- Step 1: Completed -->
+<div class="flex items-center gap-2 group cursor-pointer">
+<div class="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<span class="text-xs font-mono font-medium text-success">01 Project</span>
+</div>
+<div class="h-[1px] w-8 bg-success"></div>
+<!-- Step 2: Completed -->
+<div class="flex items-center gap-2 group cursor-pointer">
+<div class="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<span class="text-xs font-mono font-medium text-success">02 Source</span>
+</div>
+<div class="h-[1px] w-8 bg-primary"></div>
+<!-- Step 3: Active -->
+<div class="flex items-center gap-2">
+<div class="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-white border border-primary">
+<span class="font-mono text-[10px] font-bold">3</span>
+</div>
+<span class="text-xs font-mono font-bold text-primary">03 Directives</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="p-6 flex flex-col gap-6 max-h-[70vh] overflow-y-auto">
+<!-- Context Block (Read-only Summary) -->
+<div class="bg-slate-50 border border-border p-3 rounded flex items-start gap-3">
+<span class="material-symbols-outlined text-muted text-[20px] mt-0.5">info</span>
+<div class="flex flex-col gap-1">
+<p class="text-xs font-mono text-muted uppercase">Context</p>
+<p class="text-sm text-primary">Generating FSD for <span class="font-semibold">Payment Gateway V2</span> using source <span class="font-semibold text-accent font-mono bg-blue-50 px-1 rounded border border-blue-100">KB-922 (v2.1 Approved)</span></p>
+</div>
+<button class="ml-auto text-xs text-accent hover:text-blue-700 underline underline-offset-2">Edit</button>
+</div>
+<!-- Main Form: Directives -->
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-end">
+<label class="text-sm font-semibold text-primary" for="instructions">Custom Generation Instructions</label>
+<span class="text-xs text-muted font-mono">Markdown supported</span>
+</div>
+<div class="relative">
+<textarea class="w-full h-40 p-3 text-sm border border-border rounded bg-white text-primary placeholder:text-muted focus:ring-1 focus:ring-accent focus:border-accent resize-none font-mono leading-relaxed" id="instructions" placeholder="// Define specific constraints, audience tone, or exclusion rules...
+e.g. 'Ensure all API endpoints include rate limiting headers.'">Focus on compliance with PCI-DSS v4.0 standards. 
+Ensure Section 3.1 explicitly lists all deprecated fields from the legacy SOAP API.
+Tone should be technical and precise, targeting Senior Solution Architects.</textarea>
+<!-- Character count -->
+<div class="absolute bottom-2 right-2 text-[10px] font-mono text-muted bg-white/80 px-1">214 chars</div>
+</div>
+<!-- Presets / Chips -->
+<div class="flex flex-col gap-2">
+<p class="text-xs font-mono font-medium text-muted uppercase tracking-wider">Quick Directives</p>
+<div class="flex flex-wrap gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border hover:border-accent hover:text-accent rounded transition-colors text-xs font-medium text-text group">
+<span class="material-symbols-outlined text-[14px] text-muted group-hover:text-accent">add</span>
+                            Strict Security Focus
+                        </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border hover:border-accent hover:text-accent rounded transition-colors text-xs font-medium text-text group">
+<span class="material-symbols-outlined text-[14px] text-muted group-hover:text-accent">add</span>
+                            Include UML Diagrams
+                        </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border hover:border-accent hover:text-accent rounded transition-colors text-xs font-medium text-text group">
+<span class="material-symbols-outlined text-[14px] text-muted group-hover:text-accent">add</span>
+                            Executive Summary
+                        </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-accent text-accent rounded transition-colors text-xs font-medium group">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                            Legacy Deprecation
+                        </button>
+</div>
+</div>
+</div>
+<!-- Output Configuration -->
+<div class="pt-4 border-t border-border flex flex-col gap-3">
+<p class="text-sm font-semibold text-primary">Output Settings</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-xs text-muted font-mono">Format Template</label>
+<select class="form-select w-full text-sm border-border rounded bg-white py-2 pl-3 pr-8 focus:ring-accent focus:border-accent">
+<option>Standard IEEE 830</option>
+<option>Agile User Story Map</option>
+<option>Custom Enterprise V1</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs text-muted font-mono">Language</label>
+<select class="form-select w-full text-sm border-border rounded bg-white py-2 pl-3 pr-8 focus:ring-accent focus:border-accent">
+<option>English (US)</option>
+<option>English (UK)</option>
+<option>German</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="px-6 py-4 bg-slate-50 border-t border-border flex justify-between items-center">
+<button class="text-sm font-medium text-text hover:text-primary px-4 py-2 rounded hover:bg-slate-200 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                Back
+            </button>
+<div class="flex items-center gap-3">
+<span class="text-xs text-muted font-mono hidden sm:inline-block">Est. time: ~45s</span>
+<button class="bg-primary hover:bg-primary-hover text-white text-sm font-medium px-5 py-2 rounded shadow-sm hover:shadow transition-all flex items-center gap-2 group relative overflow-hidden">
+<!-- Loading stripe hidden by default, shown on active state -->
+<div class="absolute inset-0 loading-stripe opacity-0 group-active:opacity-20 transition-opacity"></div>
+<span class="relative z-10 uppercase tracking-wide text-[13px]">Generate Draft</span>
+<span class="material-symbols-outlined text-[16px] relative z-10 group-hover:translate-x-0.5 transition-transform">bolt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Background Decoration to show context -->
+<div aria-hidden="true" class="fixed inset-0 z-0 pointer-events-none flex flex-col">
+<div class="h-16 border-b border-border bg-white w-full"></div>
+<div class="flex-1 flex">
+<div class="w-64 border-r border-border bg-slate-50 h-full"></div>
+<div class="flex-1 bg-white h-full p-8">
+<div class="w-full h-32 bg-slate-100 rounded mb-4"></div>
+<div class="w-2/3 h-8 bg-slate-100 rounded mb-4"></div>
+<div class="w-full h-64 bg-slate-50 border border-slate-100 rounded"></div>
+</div>
+</div>
+</div>
+</body></html>

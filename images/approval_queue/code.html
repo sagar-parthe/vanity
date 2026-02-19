@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Approval Queue - Enterprise Clarity</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0F172A", // Overriding based on PRD, though prompt config was different, PRD is specific.
+                        "accent": "#2563EB",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#101522",
+                        "surface": "#FFFFFF",
+                        "border-color": "#E2E8F0",
+                        "text-main": "#334155",
+                        "text-muted": "#94A3B8",
+                        "success": "#059669",
+                        "warning": "#D97706",
+                        "danger": "#DC2626",
+                    },
+                    fontFamily: {
+                        "sans": ['IBM Plex Sans', 'sans-serif'],
+                        "mono": ['JetBrains Mono', 'monospace'],
+                        "display": ['Inter', 'sans-serif'], // Keep Inter for the reused nav if needed
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px",
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "6px",
+                    },
+                    boxShadow: {
+                        "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                        "DEFAULT": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for high density look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        .swiss-grid {
+            background-image: linear-gradient(#E2E8F0 1px, transparent 1px), linear-gradient(90deg, #E2E8F0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-sans h-screen flex flex-col overflow-hidden antialiased">
+<!-- Top Navigation (Reused & Adapted Style) -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-color bg-surface px-6 py-3 shrink-0 z-20">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6 bg-primary text-white flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</div>
+<h2 class="text-primary text-lg font-bold leading-tight tracking-tight">Enterprise Clarity</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="flex items-center gap-6">
+<a class="text-text-muted hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-text-muted hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">KB Management</a>
+<a class="text-primary text-sm font-medium leading-normal border-b-2 border-primary pb-0.5" href="#">Approvals</a>
+<a class="text-text-muted hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">FSD Generator</a>
+</div>
+<div class="h-6 w-px bg-border-color mx-2"></div>
+<div class="flex items-center gap-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 border border-border-color" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWMb-eIfLjUVc2bzVgOg2fC9zKy0QzWqsylwlHSWsOSXLbdDjBLsTxyesIgk09x-XqGMw2u2_F_GQ0I4dPVAyLTU802CIA75AQIcscOiOwHdAw2jsZcKtPf7_PPNYlfHeXUqiD4l_vna0OI2q8wznfO-ET86Yn9j2jnFuvAHYbk5i9GwoIK0Nr_Y3VlMjMB3qDK9l6syOaZGBz8V8Cngz2SE6dtyVA4xryZrKc3eProJ7Sxd-mJmw9rX0nP_51BWZNy6bC0mWg9Qdl");'></div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-primary">Admin User</span>
+<span class="text-[10px] text-text-muted uppercase tracking-wider">Manager</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area: Master-Detail Layout -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar: Request List -->
+<aside class="w-[280px] bg-white border-r border-border-color flex flex-col shrink-0 z-10">
+<div class="p-4 border-b border-border-color bg-background-light/50">
+<h3 class="text-xs font-bold uppercase tracking-wider text-text-muted mb-3">Pending Requests</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-text-muted text-[18px]">search</span>
+<input class="w-full bg-white border border-border-color rounded-sm py-1.5 pl-8 pr-3 text-sm focus:outline-none focus:border-accent text-primary placeholder-text-muted font-sans" placeholder="Filter requests..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- Request Card: Active -->
+<div class="group relative p-4 border-b border-border-color bg-blue-50/30 cursor-pointer hover:bg-blue-50/50 transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-accent"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="font-mono text-xs font-medium text-accent bg-blue-100 px-1.5 py-0.5 rounded-sm">KB-104</span>
+<span class="font-mono text-[10px] text-text-muted">2h ago</span>
+</div>
+<h4 class="text-sm font-semibold text-primary mb-1 truncate">Payments V2 API</h4>
+<div class="flex items-center gap-2 mt-2">
+<div class="size-4 rounded-full bg-gray-200 flex items-center justify-center text-[8px] font-bold text-gray-600">SM</div>
+<span class="text-xs text-text-muted">Req: Sarah M.</span>
+</div>
+</div>
+<!-- Request Card: Inactive -->
+<div class="group relative p-4 border-b border-border-color hover:bg-background-light cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="font-mono text-xs font-medium text-text-muted bg-gray-100 px-1.5 py-0.5 rounded-sm">KB-102</span>
+<span class="font-mono text-[10px] text-text-muted">5h ago</span>
+</div>
+<h4 class="text-sm font-medium text-text-main mb-1 truncate">Legacy Auth Protocols</h4>
+<div class="flex items-center gap-2 mt-2">
+<div class="size-4 rounded-full bg-gray-200 flex items-center justify-center text-[8px] font-bold text-gray-600">JD</div>
+<span class="text-xs text-text-muted">Req: Jim D.</span>
+</div>
+</div>
+<!-- Request Card: Inactive -->
+<div class="group relative p-4 border-b border-border-color hover:bg-background-light cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="font-mono text-xs font-medium text-text-muted bg-gray-100 px-1.5 py-0.5 rounded-sm">KB-098</span>
+<span class="font-mono text-[10px] text-text-muted">1d ago</span>
+</div>
+<h4 class="text-sm font-medium text-text-main mb-1 truncate">GDPR Compliance 2024</h4>
+<div class="flex items-center gap-2 mt-2">
+<div class="size-4 rounded-full bg-gray-200 flex items-center justify-center text-[8px] font-bold text-gray-600">AL</div>
+<span class="text-xs text-text-muted">Req: Alex L.</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Detail View -->
+<main class="flex-1 flex flex-col h-full bg-background-light relative overflow-hidden">
+<!-- Audit Header -->
+<div class="bg-white border-b border-border-color px-8 py-5 flex items-start justify-between shrink-0 shadow-sm z-10">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="text-xl font-bold text-primary">Audit Request #4922</h1>
+<span class="bg-warning/10 text-warning border border-warning/20 text-xs font-medium px-2 py-0.5 rounded-sm uppercase tracking-wide">Pending Review</span>
+</div>
+<div class="flex items-center gap-6 text-sm text-text-muted">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span>Snapshot: <span class="font-mono text-primary">v1.3-beta</span></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-mono">Oct 24, 14:30</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">folder_open</span>
+<span>Total Docs: <span class="font-mono text-primary">12</span></span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-white hover:bg-gray-50 text-text-main border border-border-color px-3 py-1.5 rounded-sm text-xs font-medium uppercase tracking-wide flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+                        Compare v1.2
+                    </button>
+<button class="bg-white hover:bg-gray-50 text-text-main border border-border-color px-3 py-1.5 rounded-sm text-xs font-medium uppercase tracking-wide flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Download All
+                    </button>
+</div>
+</div>
+<!-- Content Scroll Area -->
+<div class="flex-1 overflow-y-auto p-8 swiss-grid">
+<div class="max-w-4xl mx-auto space-y-8">
+<!-- Diff View: Changelog -->
+<section class="bg-white border border-border-color shadow-sm rounded-sm overflow-hidden">
+<div class="px-5 py-3 border-b border-border-color bg-gray-50 flex items-center justify-between">
+<h3 class="text-sm font-bold text-primary uppercase tracking-wide flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">difference</span>
+                                Document Changelog
+                            </h3>
+<span class="text-xs font-mono text-text-muted">3 Changes Detected</span>
+</div>
+<div class="divide-y divide-border-color">
+<!-- Added Item -->
+<div class="flex items-center px-5 py-3 hover:bg-green-50/30 transition-colors group">
+<div class="w-8 flex justify-center mr-3">
+<span class="material-symbols-outlined text-success">add_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm text-primary font-medium">API_Spec_v2.pdf</span>
+<span class="bg-success/10 text-success text-[10px] font-bold px-1.5 py-0.5 rounded-sm uppercase border border-success/20">Added</span>
+</div>
+<div class="text-xs text-text-muted mt-0.5">Size: 2.4 MB • Uploaded by Sarah M.</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-accent text-xs font-medium uppercase tracking-wide hover:underline">View</button>
+</div>
+<!-- Added Item -->
+<div class="flex items-center px-5 py-3 hover:bg-green-50/30 transition-colors group">
+<div class="w-8 flex justify-center mr-3">
+<span class="material-symbols-outlined text-success">add_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm text-primary font-medium">Payment_Gateway_Diagram.png</span>
+<span class="bg-success/10 text-success text-[10px] font-bold px-1.5 py-0.5 rounded-sm uppercase border border-success/20">Added</span>
+</div>
+<div class="text-xs text-text-muted mt-0.5">Size: 1.1 MB • Uploaded by Sarah M.</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-accent text-xs font-medium uppercase tracking-wide hover:underline">View</button>
+</div>
+<!-- Removed Item -->
+<div class="flex items-center px-5 py-3 hover:bg-red-50/30 transition-colors group bg-gray-50/50">
+<div class="w-8 flex justify-center mr-3">
+<span class="material-symbols-outlined text-danger">do_not_disturb_on</span>
+</div>
+<div class="flex-1 opacity-60">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm text-text-main line-through decoration-danger decoration-2">Old_Auth_Flow.docx</span>
+<span class="bg-danger/10 text-danger text-[10px] font-bold px-1.5 py-0.5 rounded-sm uppercase border border-danger/20">Removed</span>
+</div>
+<div class="text-xs text-text-muted mt-0.5">Size: 500 KB • Deprecated</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 text-text-muted hover:text-primary text-xs font-medium uppercase tracking-wide hover:underline">History</button>
+</div>
+</div>
+</section>
+<!-- Automated QA Verification -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-bold text-primary uppercase tracking-wide flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                                Automated Verification
+                            </h3>
+<span class="text-xs text-text-muted font-mono bg-white px-2 py-1 border border-border-color rounded-sm">Model: GPT-4o-Mini</span>
+</div>
+<!-- QA Card 1 -->
+<div class="bg-white border border-border-color rounded-sm p-5 shadow-sm">
+<div class="flex items-start gap-4">
+<div class="size-6 bg-primary text-white rounded-full flex items-center justify-center font-mono text-xs font-bold mt-0.5 shrink-0">Q</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-primary mb-3">What is the max payload for the transaction endpoint?</p>
+<div class="bg-background-light border border-border-color p-3 rounded-sm relative">
+<div class="absolute -left-7 top-0 size-6 bg-accent/10 text-accent rounded-full flex items-center justify-center font-mono text-xs font-bold border border-accent/20">A</div>
+<p class="text-sm text-text-main leading-relaxed">The maximum payload size for the transaction endpoint is strictly limited to <span class="bg-yellow-100 px-1 border-b border-yellow-300">2MB</span>. Payloads exceeding this limit will return a 413 Request Entity Too Large error.</p>
+<div class="mt-2 flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-success"></span>
+<span class="text-[10px] uppercase font-bold text-text-muted">Confidence: 98%</span>
+</div>
+<a class="text-[11px] text-accent hover:underline flex items-center gap-1 font-mono" href="#">
+<span class="material-symbols-outlined text-[12px]">link</span>
+                                                Source: API_Spec_v2.pdf (p. 14)
+                                            </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- QA Card 2 -->
+<div class="bg-white border border-border-color rounded-sm p-5 shadow-sm">
+<div class="flex items-start gap-4">
+<div class="size-6 bg-primary text-white rounded-full flex items-center justify-center font-mono text-xs font-bold mt-0.5 shrink-0">Q</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-primary mb-3">Does the new gateway support XML legacy formats?</p>
+<div class="bg-background-light border border-border-color p-3 rounded-sm relative">
+<div class="absolute -left-7 top-0 size-6 bg-accent/10 text-accent rounded-full flex items-center justify-center font-mono text-xs font-bold border border-accent/20">A</div>
+<p class="text-sm text-text-main leading-relaxed">No, the V2 gateway <span class="bg-yellow-100 px-1 border-b border-yellow-300">discontinues support for XML</span>. All requests must be formatted as JSON. Legacy clients must migrate to the REST interface.</p>
+<div class="mt-2 flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-success"></span>
+<span class="text-[10px] uppercase font-bold text-text-muted">Confidence: 99%</span>
+</div>
+<a class="text-[11px] text-accent hover:underline flex items-center gap-1 font-mono" href="#">
+<span class="material-symbols-outlined text-[12px]">link</span>
+                                                Source: API_Spec_v2.pdf (p. 4)
+                                            </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- QA Card 3 -->
+<div class="bg-white border border-border-color rounded-sm p-5 shadow-sm">
+<div class="flex items-start gap-4">
+<div class="size-6 bg-primary text-white rounded-full flex items-center justify-center font-mono text-xs font-bold mt-0.5 shrink-0">Q</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-primary mb-3">What are the required headers for authentication?</p>
+<div class="bg-background-light border border-border-color p-3 rounded-sm relative">
+<div class="absolute -left-7 top-0 size-6 bg-accent/10 text-accent rounded-full flex items-center justify-center font-mono text-xs font-bold border border-accent/20">A</div>
+<p class="text-sm text-text-main leading-relaxed">Required headers include <span class="font-mono text-xs bg-gray-200 px-1 py-0.5 rounded">Authorization: Bearer &lt;token&gt;</span> and <span class="font-mono text-xs bg-gray-200 px-1 py-0.5 rounded">X-Client-ID</span>. The <span class="font-mono text-xs bg-gray-200 px-1 py-0.5 rounded">X-Request-Date</span> header is optional but recommended.</p>
+<div class="mt-2 flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-warning"></span>
+<span class="text-[10px] uppercase font-bold text-text-muted">Confidence: 85%</span>
+</div>
+<a class="text-[11px] text-accent hover:underline flex items-center gap-1 font-mono" href="#">
+<span class="material-symbols-outlined text-[12px]">link</span>
+                                                Source: API_Spec_v2.pdf (p. 22)
+                                            </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Spacer -->
+<div class="h-16"></div>
+</div>
+</div>
+<!-- Sticky Action Footer -->
+<div class="bg-white border-t border-border-color p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 sticky bottom-0 flex justify-between items-center">
+<div class="flex flex-col">
+<span class="text-xs text-text-muted font-mono uppercase">Action required</span>
+<span class="text-sm text-primary font-medium">Approve changes to publish v1.3?</span>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2.5 rounded-sm border border-danger text-danger bg-transparent hover:bg-red-50 text-sm font-bold uppercase tracking-wider transition-colors focus:ring-2 focus:ring-danger focus:ring-offset-2">
+                        Reject
+                    </button>
+<button class="px-6 py-2.5 rounded-sm bg-success text-white hover:bg-green-700 text-sm font-bold uppercase tracking-wider transition-colors shadow-sm focus:ring-2 focus:ring-success focus:ring-offset-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        Approve Snapshot
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>
